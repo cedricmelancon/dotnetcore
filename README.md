@@ -1,2 +1,2 @@
-# dotnetcore
-Formation dotnet core
+# .NET Core
+Formation dotnet core intermédiaire
