@@ -7,9 +7,12 @@ Où isCollectible, lorsque mis à `True` permet de unloader l'assembly.
 
 # Création du projet dans Visual Studio
 
+Créer une application console du nom de AppWithPlugin.
+
 ![alt text](createproject.jpg)
 
-# Creation du AssemblyLoadContext
+## Creation du AssemblyLoadContext
+
 ```
 using System;
 using System.Reflection;
@@ -17,11 +20,11 @@ using System.Runtime.Loader;
 
 namespace AppWithPlugin
 {
-    class PluginLoadContext : AssemblyLoadContext
+    public class PluginLoadContext : AssemblyLoadContext
     {
         private readonly AssemblyDependencyResolver _resolver;
 
-        public PluginLoadContext(string pluginPath)
+        public PluginLoadContext(string pluginPath) : base(true)
         {
             _resolver = new AssemblyDependencyResolver(pluginPath);
         }
@@ -68,6 +71,17 @@ namespace PluginBase
 ```
 
 # Création d'un plugin simple sans dépendances
+Pour qu'un plugin soit détecté, il suffit d'implémenter l'interface préalablement créée `ICommand`. Il faut ajouter une référence à la librairie PluginBase en modifiant le fichier `.csproj`
+
+```
+ <ItemGroup>
+    <ProjectReference Include="..\PluginBase\PluginBase.csproj">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+```
+Il faut faire cette étape pour s'assurer que la DLL n'est pas copiée dans le répertoire de compilation. Si la DLL est présente dans ce répertoire, elle sera chargée en double, car l'application de base l'utilise aussi. Il y aura alors une incompatibilité, car deux versions seront présentes.
 
 ```
 using System;
@@ -88,8 +102,16 @@ namespace HelloPlugin
     }
 }
 ```
+# Création d'un plugin avec dépendances
 
+Nous allons maintenant créer un plugin qui comporte une référence à la librairie Newtonsoft Json.
+
+Encore une fois
 ```
+<ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+</ItemGroup>
+
 <ItemGroup>
     <ProjectReference Include="..\PluginBase\PluginBase.csproj">
         <Private>false</Private>
@@ -97,29 +119,66 @@ namespace HelloPlugin
     </ProjectReference>
 </ItemGroup>
 ```
-
-The \<Private>false\</Private> element is important. This tells MSBuild to not copy PluginBase.dll to the output directory for HelloPlugin. If the PluginBase.dll assembly is present in the output directory, PluginLoadContext will find the assembly there and load it when it loads the HelloPlugin.dll assembly.
-
-# Création d'un plugin avec dépendances
-
+La classe du plugin ressemblera à:
 ```
-<PackageReference Include="A.PluginBase" Version="1.0.0">
-    <ExcludeAssets>runtime</ExcludeAssets>
-</PackageReference>
-```
-This prevents the A.PluginBase assemblies from being copied to the output directory of your plugin and ensures that your plugin will use A's version of A.PluginBase.
+using System;
+using System.Reflection;
+using Newtonsoft.Json;
+using PluginBase;
 
-Because plugin dependency loading uses the .deps.json file, there is a gotcha related to the plugin's target framework. Specifically, your plugins should target a runtime, such as .NET Core 3.0, instead of a version of .NET Standard. The .deps.json file is generated based on which framework the project targets, and since many .NET Standard-compatible packages ship reference assemblies for building against .NET Standard and implementation assemblies for specific runtimes, the .deps.json may not correctly see implementation assemblies, or it may grab the .NET Standard version of an assembly instead of the .NET Core version you expect.
+namespace JsonPlugin
+{
+    public class JsonPlugin : ICommand
+    {
+        public string Name => "json";
+
+        public string Description => "Outputs JSON value.";
+
+        private struct Info
+        {
+            public string JsonVersion;
+            public string JsonLocation;
+            public string Machine;
+            public string User;
+            public DateTime Date;
+        }
+
+        public int Execute()
+        {
+            Assembly jsonAssembly = typeof(JsonConvert).Assembly;
+            Info info = new Info()
+            {
+                JsonVersion = jsonAssembly.FullName,
+                JsonLocation = jsonAssembly.Location,
+                Machine = Environment.MachineName,
+                User = Environment.UserName,
+                Date = DateTime.Now
+            };
+
+            Console.WriteLine(JsonConvert.SerializeObject(info, Formatting.Indented));
+
+            return 0;
+        }
+    }
+}
+```
+Pour compiler le plugin et s'assurer que la dépendance est disponible, il faut faire un publish de la façon suivante:
+
+`dotnet publish`
+
+Si la commande indique que le SDK n'est pas trouvable, veuillez ajouter la variable d'environnement `MSBuildSDKsPath` qui pointe sur l'emplacement du SDK (par exemple `C:\Program Files\dotnet\sdk\3.1.202\Sdks`).
 
 # Création de l'application
+Dans le fichier Program.cs du projet AppWithPlugin, mettre le code suivant:
 
 ```
-using PluginBase;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using PluginBase;
 
 namespace AppWithPlugin
 {
@@ -135,30 +194,90 @@ namespace AppWithPlugin
                     Console.ReadLine();
                 }
 
-                // Load commands from plugins.
+                string[] pluginPaths =
+                {
+                    @"HelloPlugin\bin\Debug\netcoreapp3.1\HelloPlugin.dll",
+                    @"JsonPlugin\bin\Debug\netcoreapp3.1\JsonPlugin.dll"
+                };
 
-                if (args.Length == 0)
+                foreach (var pluginPath in pluginPaths)
                 {
-                    Console.WriteLine("Commands: ");
-                    // Output the loaded commands.
-                }
-                else
-                {
-                    foreach (string commandName in args)
+                    ExecuteAndUnload(pluginPath, out var assemblyContextWeakReference);
+
+                    for (int i = 0; assemblyContextWeakReference.IsAlive && (i < 10); i++)
                     {
-                        Console.WriteLine($"-- {commandName} --");
-
-                        // Execute the command with the name passed as an argument.
-
-                        Console.WriteLine();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                     }
                 }
+
+                Console.WriteLine("Press any key!");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
         }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static void ExecuteAndUnload(string assemblyPath, out WeakReference alcWeakRef)
+        {
+            var pluginPath = GetPluginPath(assemblyPath);
+            var alc = new PluginLoadContext(pluginPath);
+            Assembly a = alc.LoadFromAssemblyPath(pluginPath);
+
+            alcWeakRef = new WeakReference(alc, trackResurrection: true);
+
+            var types = a.GetTypes();
+
+            var instance = (ICommand) Activator.CreateInstance(a.GetType(types[0].FullName));
+            
+            var result = instance?.Execute();
+
+            Console.WriteLine($"Result: {result}");
+
+            alc.Unload();
+        }
+
+        static string GetPluginPath(string relativePath)
+        {
+            // Navigate up to the solution root
+            string root = Path.GetFullPath(Path.Combine(
+                Path.GetDirectoryName(
+                    Path.GetDirectoryName(
+                        Path.GetDirectoryName(
+                            Path.GetDirectoryName(
+                                Path.GetDirectoryName(typeof(Program).Assembly.Location)))))));
+
+            return Path.GetFullPath(Path.Combine(root, relativePath.Replace('\\', Path.DirectorySeparatorChar)));
+        }
+
+        static IEnumerable<ICommand> CreateCommands(Assembly assembly)
+        {
+            int count = 0;
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (typeof(ICommand).IsAssignableFrom(type))
+                {
+                    if (Activator.CreateInstance(type) is ICommand result)
+                    {
+                        count++;
+                        yield return result;
+                    }
+                }
+            }
+
+            if (count == 0)
+            {
+                string availableTypes = string.Join(",", assembly.GetTypes().Select(t => t.FullName));
+                throw new ApplicationException(
+                    $"Can't find any type which implements ICommand in {assembly} from {assembly.Location}.\n" +
+                    $"Available types: {availableTypes}");
+            }
+        }
     }
 }
+
 ```

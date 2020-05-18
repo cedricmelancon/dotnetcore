@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3">
-      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
   </ItemGroup>
 
   <ItemGroup>

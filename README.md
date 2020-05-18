@@ -5,7 +5,7 @@ Formation dotnet core intermédiaire
 Lors de la première journée, nous allons voir les concepts reliés à la création d'application autant au niveau .NET Core que ASP<i></i>.NET Core.
 
 ## Application .NET Core
-1. [Créer une application .NET Core avec plugins](Jour1/1%20-%20Application%20avec%20Plugins/README.md)
+1. [Créer une application .NET Core avec plugins](Jour1/1-Plugins/README.md)
 
 ## ASP<i></i>.NET Core
 2. [Le App Startup](Jour1/2%20-%20Startup/README.md)
