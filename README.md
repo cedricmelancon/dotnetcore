@@ -8,9 +8,9 @@ Lors de la première journée, nous allons voir les concepts reliés à la créa
 1. [Créer une application .NET Core avec plugins](Jour1/1-Plugins/README.md)
 
 ## ASP<i></i>.NET Core
-2. [Le App Startup](Jour1/2%20-%20Startup/README.md)
-3. [L'injection de dépendances](Jour1/3%20-%20Injection%20de%20dépendances/README.md)
-4. [Les différents hosts](Jour1/4%20-%20Hosts/README.md)
+2. [Le App Startup](Jour1/2-Startup/README.md)
+3. [L'injection de dépendances](Jour1/3-DependencyInjection/README.md)
+4. [Les différents hosts](Jour1/4-Hosts/README.md)
 5. [Web server](Jour1/5%20-%20Web%20Server/README.md)
 6. [La configuration](Jour1/6%20-%20Configuration/README.md)
 7. [Les secrets](Jour1/7%20-%20Secrets/README.md)
