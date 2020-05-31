@@ -5,7 +5,7 @@ Formation dotnet core intermédiaire
 
 1- [Les plugins](Jour1/1-Plugins/README.md)<BR>
 2- [Le App Startup](Jour1/2-Startup/README.md)<BR>
-3- [L'injection de dépendances](Jour1/3-DependencyInjection/README.md)
+3- [L'injection de dépendances](Jour1/3-DependencyInjection/README.md)<BR>
 4- [Les différents hosts](Jour1/4-Hosts/README.md)<BR>
 
 # Jour 2
@@ -29,5 +29,5 @@ Formation dotnet core intermédiaire
 
 # Jour 4
 16- [Unit Testing](Jour4/16-UnitTesting/README.md)<BR>
-17- Faire un WebAPI dans un container Docker<BR>
-18- .NET Core dans Visual Studio avec Kubernetes<BR>
+17- [Faire un WebAPI dans un container Docker](Jour4/17-WebAPIDocker/README.md)<BR>
+18- [.NET Core dans Visual Studio avec Kubernetes](Jour4/18-Kubernetes/README.md)<BR>
