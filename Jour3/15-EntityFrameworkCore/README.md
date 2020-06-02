@@ -1,5 +1,11 @@
 # EntityFramework Core
-Entity Framework (EF) Core est une version cross-platform open-source, extensible et lightweigth de la technologie EntityFramework. Il peut servir comme O/RM (object-relational mapper) permettant aux développeurs .NET de travailler avec une base de données en utilisant des objets .NET.
+Entity Framework (EF) Core est une version cross-platform open-source, extensible et lightweigth de la technologie EntityFramework. Il peut servir comme ORM (object-relational mapper) permettant aux développeurs .NET de travailler avec une base de données en utilisant des objets .NET.
+
+# Comparaison avec d'autres ORM
+![alt text](orm.jpg)
+source: https://www.slideshare.net/MSDEVMTL/entity-framework-core-2-vs-micro-orm-performances
+
+En comparaison avec les autres ORMs, Entity Framework est une solution complète alors que d'autres, comme NPoco sont considérés des micro-ORM. Le point faible d'Entity Framework est au niveau des performances, quoi qu'il s'améliore de version en version. Dapper est un des ORM les plus complet tant au niveau des fonctionnalités que des performances, ce qui en fait un des plus populaire.
 
 # Models
 EF Core permet l'accès aux données à l'aide de models. Un model est une classe et un contexte qui représentent une session avec la base de données permettant de faire des requêtes et sauvegarder des données.
@@ -327,7 +333,18 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 
 Voir la référence pour plus de fonctionalités.
 
-# Migrations
+# Database first
+Lorsque la base de données est déjà existante, il est possible de générer les models à partir de celle-ci. Pour ce faire, il faut utiliser le Package Manager Console tools.
+
+```
+Scaffold-DbContext "Server=...;Database=SchoolDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+```
+
+Cette commande va créer les classes seulement pour les tables et non pour les StoredProcedure ou les vues. La classe DBContext sera aussi générée.
+
+# Code first ou Migrations
+Il est possible de générer directement les tables de base de données à partir des classes d'entités. Ceci est fait avec les migrations.
+
 Pour créer des migrations, il faut utiliser le Package Manager Console tools.
 
 ```

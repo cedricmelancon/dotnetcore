@@ -28,6 +28,7 @@ Formation dotnet core intermédiaire
 [Projet jour 3](Jour3/README.md)
 
 # Jour 4
-16- [Unit Testing](Jour4/16-UnitTesting/README.md)<BR>
-17- [Faire un WebAPI dans un container Docker](Jour4/17-WebAPIDocker/README.md)<BR>
-18- [.NET Core dans Visual Studio avec Kubernetes](Jour4/18-Kubernetes/README.md)<BR>
+16- [gRPC Services](Jour4/16-gRPC/README.md)<BR>
+17- [Unit Testing](Jour4/17-UnitTesting/README.md)<BR>
+18- [Faire un WebAPI dans un container Docker](Jour4/18-WebAPIDocker/README.md)<BR>
+19- [.NET Core dans Visual Studio avec Kubernetes](Jour4/19-Kubernetes/README.md)<BR>
