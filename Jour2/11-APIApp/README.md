@@ -40,6 +40,7 @@ Le framework fournit plusieurs attributs dont ceux-ci:
 - [HttpGet](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.httpgetattribute?view=aspnetcore-3.1)
 - [Consumes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.consumesattribute?view=aspnetcore-3.1)
 - [Produces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.producesattribute?view=aspnetcore-3.1)
+
 Voici un exemple d'utilisation d'attributs:
 ```
 [HttpPost]
