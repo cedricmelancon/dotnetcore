@@ -6,7 +6,7 @@ Les applications peuvent configurer les routes en utilisant:
 - [Razor Pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/razor-pages-conventions?view=aspnetcore-3.1)
 - SignalR
 - gRPC Services
-- Endpoint-enabled middleware (exemple Helth Checks)
+- Endpoint-enabled middleware (exemple Health Checks)
 - Delegates et lambdas registered routines
 
 # La base

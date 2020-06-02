@@ -139,6 +139,18 @@ public Task SendPrivateMessage(string user, string message)
 }
 ```
 
+Cet exemple démontre comment utiliser l'adresse email comme identifiant:
+```
+public class EmailBasedUserIdProvider : IUserIdProvider
+{
+    public virtual string GetUserId(HubConnectionContext connection)
+    {
+        return connection.User?.FindFirst(ClaimTypes.Email)?.Value;
+    }
+}
+```
+
+
 # Groups
 Un groupe est une collection de connexions associés à l'aide d'un nom. Les messages sont donc envoyés à toutes les connexions du groupe. Une connexion peut être membre de plusieurs groupes. Pour gérer les groupes:
 ```

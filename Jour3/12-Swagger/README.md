@@ -299,6 +299,7 @@ public class TodoController : ControllerBase
 {
     private readonly TodoContext _context;
 ```
+
 # Références
 - https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-3.1
 - https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&tabs=visual-studio
