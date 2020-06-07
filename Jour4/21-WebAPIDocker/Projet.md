@@ -11,4 +11,4 @@ Deuxième partie:
 - Partir du projet gRPC et ajouter le support de Docker.
 - S'assurer que le projet fonctionne autant à partir de Visual Studio que de Docker CLI.
 - Ajouter le support de Docker Compose et ajouter le service fait dans la première partie.
-- S'assurer que vous êtes en mesure de communiquer avec les 2 API.
+- S'assurer que vous êtes en mesure de communiquer avec les 2 API. Note que pour faire fonctionner le gRPC, ça nécessite beaucoup plus de travail, donc ne vous attendez pas à ce que ça fonctionne. Vous pouvez valider que l'appel est fait, mais une exception sera lancée. Vous devez lancer les deux services sur des ports séparés.

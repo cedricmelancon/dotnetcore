@@ -6,8 +6,6 @@ source: https://www.docker.com/resources/what-container
 
 Un container représente une abstraction au niveau de l'application qui englobe le code et ses dépendances. Plusieurs containers peuvent rouler sur la même machine et partagent le même OS. Ceci fait en sorte que l'empreinte d'un container est beaucoup plus petit que celui d'une machine virtuelle.
 
-
-
 # .Net Core et Docker
 Il est possible de créer un déploiement Docker directement à partir de Visual Studio. Il suffit de sélectionner l'option `Enable Docker Support` et de sélectionner le type de déploiement (Linux ou Windows).
 
@@ -198,3 +196,10 @@ services:
 Ici, on défini les variables d'environnement qui seront utilisées par le container, les ports utilisés et on ajoute des volumes pour les secrets et le certificat pour rouler en https.
 
 Avec le docker compose, il est possible de configurer plusieurs services. Il serait donc possible d'intégrer un service de base de données et ainsi faire des tests d'intégration.
+
+# Commandes
+Docker fonctionne principalement par ligne de commande. Il faut donc les comprendre et les mémoriser. Voici un aide-mémoire qui pourrait vous aider grandement:
+https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf
+
+# Visual Code
+Visual Code contient une extension très intéressante pour Docker. Il aide à visualiser le contenu de notre Docker.
