@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "dockerapi.fullname" . }}-test-connection"
+  labels:
+    {{- include "dockerapi.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "dockerapi.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
