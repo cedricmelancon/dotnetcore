@@ -31,7 +31,7 @@ Formation dotnet core intermédiaire
 17. [Unit Of Work pattern](Jour3/17-UnitOfWork/README.md)
 18. [gRPC Services](Jour3/18-gRPC/README.md)
 19. [ViewModels](Jour3/19-ViewModels/README.md)
-20. [VisualStudio](Jour3/20-Kubernetes/README.md)
+20. [VisualStudio](Jour3/20-VisualStudio/README.md)
 
 # Jour 4
 21. [Faire un WebAPI dans un container Docker](Jour4/21-WebAPIDocker/README.md)
