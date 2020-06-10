@@ -41,7 +41,7 @@ Le plugin le plus populaire pour aider les développeurs est Resharper de la com
 Plusieurs extensions sont disponibles sur le marketplace de Visual Studio (https://marketplace.visualstudio.com/)
 
 Voici quelques extensions qui sont des incontournables:
-- Add New File: Permet d'ajouter des fichiers/répertoires en faisant ALT-F2
+- Add New File: Permet d'ajouter des fichiers/répertoires en faisant SHIFT-F2
 - VSColorOutput: Met de la couleur dans la fenêtre d'output, ce qui rend plus facile de trouver les warning et les erreurs.
 - Productivity Power Tools: Boîte à outils qui contient plusieurs fonctionnalités
     - AlignAssignment: CTRL-ALT-]
